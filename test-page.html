@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Dynamic Carousel</title>
+		<style type="text/css">
+		#carousel {
+			position: absolute;
+			left: 0px;
+			top: 20px;
+		}
+		#ver {
+			position: absolute;
+			margin: 0px;
+			left: 0px;
+			top: 0px;
+		}
+		</style>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="dynamic-carousel.js"></script>
+	</head>
+	<body>
+		<div id="carousel"></div>
+		<p id = "ver"></p>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var car = new Carousel("car");
+				car.create("#carousel", 7, 100, 5, 5);
+				$("#ver").html("v" + car.version);
+			});
+		</script>
+	</body>
+</html>
