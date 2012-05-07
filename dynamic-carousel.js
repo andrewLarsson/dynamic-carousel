@@ -18,7 +18,7 @@ function Carousel(name) {
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.0";
+	this.version = "1.1";
 	
 	/*Public Methods*/
 	this.create = function(where, type, count, size, distance, speed, colorful) {
