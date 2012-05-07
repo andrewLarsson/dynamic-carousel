@@ -104,11 +104,11 @@ function Carousel(name) {
 				//If we're already at the center, do nothing.
 				return;
 			} else if(repeat > 0) {
-				//If we're at a positive distance, move the box the needed amount of times to the right.
+				//If we're at a positive distance, start moving the box to the right.
 				loopMove = setInterval(moveRight, (5500 / boxesSpeed));
 				moveRight();
 			} else if(repeat < 0) {
-				//If we're at a negative distance, move the box to the left.
+				//If we're at a negative distance, start moving the box to the left.
 				loopMove = setInterval(moveLeft, (5500 / boxesSpeed));
 				moveLeft();
 			}
