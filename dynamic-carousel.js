@@ -164,7 +164,7 @@ function Carousel(name) {
 		}
 		
 		//Make sure we're not currently animating the carousel.
-		if(animating == false) {
+		if(!animating) {
 			//Start animating the carousel.
 			animating = true;
 			
