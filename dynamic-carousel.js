@@ -94,8 +94,10 @@ function Carousel(name) {
 	var center = function(target) {
 		/*Centers the target box in the carousel.*/
 		
+		//TODO Make a queue if we're animating.
 		//Make sure we're not currently not animating the carousel.
-		if(animating == false) {
+		if(!animating) {
+			//TODO Use calculations instead of iterations and setInterval.
 			//Find the box's distance from the center.
 			repeat = Math.ceil(boxesCount / 2) - parseInt($(target).attr("slot"));
 			
@@ -126,7 +128,7 @@ function Carousel(name) {
 		}
 		
 		//Make sure we're not currently animating the carousel.
-		if(animating == false) {
+		if(!animating) {
 			//Start animating the carousel.
 			animating = true;
 			
