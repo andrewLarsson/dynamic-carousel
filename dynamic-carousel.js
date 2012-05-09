@@ -18,7 +18,7 @@ function Carousel(name) {
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.2.2";
+	this.version = "1.2.3";
 	
 	/*Public Methods*/
 	this.create = function(type, colorful) {
@@ -32,26 +32,32 @@ function Carousel(name) {
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
 		
 		//The visibleContainer has overflow: hidden, so that only some of the boxes are shown.
+		$("#" + id + "-visibleContainer").css({
+			"overflow-x": "hidden",
+			"width": "0px",
+			"left": "0px",
+			"height": boxesSize + "px",
+			"position": "absolute"
+		});
+		
 		//The extendedContainer merely holds all the boxes.
-		$("#" + id + "-visibleContainer").css("overflow-x", "hidden");
-		$("#" + id + "-visibleContainer").css("width", "0px");
-		$("#" + id + "-visibleContainer").css("left", "0px");
-		$("#" + id + "-visibleContainer").css("height", (boxesSize + "px"));
-		$("#" + id + "-visibleContainer").css("position", "absolute");
-		$("#" + id + "-extendedContainer").css("width", $("#" + id + "-visibleContainer").css("width"));
-		$("#" + id + "-extendedContainer").css("width", "+=" + (boxesSize + boxesDistance) + "px");
-		$("#" + id + "-extendedContainer").css("left", "-" + (boxesSize + boxesDistance) + "px");
-		$("#" + id + "-extendedContainer").css("position", "absolute");
-		$("#" + id + "-extendedContainer").css("height", (boxesSize + "px"));
+		$("#" + id + "-extendedContainer").css({
+			"width": (parseInt($("#" + id + "-visibleContainer").css("width")) + (boxesSize + boxesDistance)) + "px",
+			"left": "-" + (boxesSize + boxesDistance) + "px",
+			"position": "absolute",
+			"height": boxesSize + "px"
+		});
 		
 		//Adds the specified amount of boxes to the carousel.
 		for(var i = 0; i < boxesCount; i ++) {
 			//Create a box and append it to the containing element.
 			$("#" + id + "-extendedContainer").append("<" + boxesType + " id='" + id + "-box" + i + "'></" + boxesType + ">");
-			$("#" + id + "-box" + i).css("width", boxesSize + "px");
-			$("#" + id + "-box" + i).css("height", boxesSize + "px");
-			$("#" + id + "-box" + i).css("position", "absolute");
-			$("#" + id + "-box" + i).css("left", (i * (boxesDistance + boxesSize)));
+			$("#" + id + "-box" + i).css({
+				"width": boxesSize + "px",
+				"height": boxesSize + "px",
+				"position": "absolute",
+				"left": (i * (boxesDistance + boxesSize)) + "px"
+			});
 			$("#" + id + "-box" + i).attr("class",  (id + "-class"));
 			
 			//Apply a custom slot attribute that allows referencing its position in the carousel.
