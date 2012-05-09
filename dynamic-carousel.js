@@ -12,19 +12,20 @@ function Carousel(name) {
 	var boxesSize = 0;
 	var boxesDistance = 0;
 	var boxesSpeed = 0;
-	var boxesColorful = false;
+	var boxesColorful = "";
 	var repeat = 0;
 	var loopMove = 0;
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.2.1";
+	this.version = "1.2.2";
 	
 	/*Public Methods*/
-	this.create = function(colorful) {
+	this.create = function(type, colorful) {
 		/*Creates a carousel inside the specified element with the parameters defined in setVars().*/
 		
 		//Check to see if we need it colorful, and itf it's not defined, set it to false.
+		boxesType = type || "div";
 		boxesColorful = colorful || "no";
 		
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
@@ -80,10 +81,9 @@ function Carousel(name) {
 		});
 	}
 	
-	this.setVars = function(where, type, count, size, distance, speed) {
-		//Set predefined variables if they're not specified in the parameters.
+	this.setVars = function(where, count, size, distance, speed) {
+		/*Sets all the necessary variables used throughout the constructor.*/
 		boxesWhere = where || document.body;
-		boxesType = type || "div";
 		boxesCount = count || 5;
 		boxesSize = size || 50;
 		boxesDistance = distance || 5;
@@ -91,10 +91,20 @@ function Carousel(name) {
 	}
 	
 	this.getVars = function() {
-		
+		/*Returns all the variables that were defined in setVars().*/
+		var vars = {
+			where: boxesWhere,
+			count: boxesCount,
+			size: boxesSize,
+			distance: boxesDistance,
+			speed: boxesSpeed
+		};
+		return vars;
 	}
 	
 	this.stepLeft = function() {
+		/*Moves the carousel one step to the left.*/
+		
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
 			//Start animating the carousel.
@@ -122,6 +132,8 @@ function Carousel(name) {
 	}
 	
 	this.stepRight = function() {
+		/*Moves the carousel one step to the right.*/
+		
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
 			//Start animating the carousel.
@@ -148,7 +160,7 @@ function Carousel(name) {
 		}
 	}
 	
-	/*Private Methods*/
+	/*Private Functions*/
 	var randomHexColor = function() {
 		/*Returns a random hexadecimal color.*/
 		
@@ -184,7 +196,7 @@ function Carousel(name) {
 	}
 	
 	var moveRight = function() {
-		/*Moves the carousel one step to the right.*/
+		/*Moves the carousel one step to the right using an iterator.*/
 		
 		//TODO Move this decrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
 		//Decrease the repeat counter, and then check to see if it's at the center.
@@ -220,7 +232,7 @@ function Carousel(name) {
 	}
 	
 	var moveLeft = function() {
-		/*Moves the carousel one step to the left.*/
+		/*Moves the carousel one step to the left using an iterator.*/
 		
 		//TODO Move this incrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
 		//Increment the repeat counter, and then check to see if it's at the center.

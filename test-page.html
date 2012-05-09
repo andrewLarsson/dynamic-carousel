@@ -15,7 +15,7 @@
 			left: 0px;
 			top: 0px;
 		}
-		a {
+		.buttons {
 			position: relative;
 			top: 110px;
 		}
@@ -26,13 +26,13 @@
 	<body>
 		<div id="carousel"></div>
 		<p id="ver"></p>
-		<a href="#" onclick="car.stepLeft()">&lt;&lt;&lt;&lt;&lt;._._._._._._._._._._._._._._._._...</a>
-		<a href="#" onclick="car.stepRight()">..._._._._._._._._._._._._._._._._.&gt;&gt;&gt;&gt;&gt;</a>
+		<a href="#" class="buttons" onclick="car.stepLeft()">&lt;&lt;&lt;&lt;&lt;._._._._._._._._._._._._._._._._...</a>
+		<a href="#" class="buttons" onclick="car.stepRight()">..._._._._._._._._._._._._._._._._.&gt;&gt;&gt;&gt;&gt;</a>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				car = new Carousel("car");
-				car.setVars("#carousel", "div", 7, 100, 5, 5);
-				car.create("colorful");
+				car.setVars("#carousel", 7, 100, 5, 5);
+				car.create("div", "colorful");
 				car.animate();
 				$("#ver").html("v" + car.version);
 			});
