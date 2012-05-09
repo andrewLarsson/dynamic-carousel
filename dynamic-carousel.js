@@ -18,7 +18,7 @@ function Carousel(name) {
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.1";
+	this.version = "1.2";
 	
 	/*Public Methods*/
 	this.create = function(where, type, count, size, distance, speed, colorful) {
@@ -67,11 +67,6 @@ function Carousel(name) {
 				$("#" + id + "-box" + i).css("background-color", randomHexColor());
 			}
 			
-			//Attaches an event handler to each box that calls the center() function when clicked.
-			$("#" + id + "-box" + i).click(function() {
-				center(this);
-			});
-			
 			//Increase the size of the containing elements, so they display the correct number of boxes.
 			$("#" + id + "-visibleContainer").css("width", "+=" + (boxesSize + boxesDistance) + "px");
 			$("#" + id + "-extendedContainer").css("width", "+=" + (boxesSize + boxesDistance) + "px");
@@ -80,6 +75,69 @@ function Carousel(name) {
 		//Increase the size of the containing elements one last time to give them the required width.
 		$("#" + id + "-visibleContainer").css("width", "-=" + ((boxesSize + boxesDistance) * 2) + "px");
 		$("#" + id + "-extendedContainer").css("width", "-=" + (boxesSize + boxesDistance) + "px");
+	}
+	
+	this.animate = function() {
+		$("." + id + "-class").each(function() {
+			//Attaches an event handler to each box that calls the center() function when clicked.
+			$(this).click(function() {
+				center(this);
+			});
+		});
+	}
+	
+	this.stepLeft = function() {
+		//Make sure we're not currently animating the carousel.
+		if(!animating) {
+			//Start animating the carousel.
+			animating = true;
+			
+			//This will affect anything with this class name iteratively.
+			$("." + id + "-class").each(function() {
+				//Check to see if it's the first box.
+				if($(this).attr("slot") == "1") {
+					//Move the first box to the end.
+					$(this).css("left", ((boxesDistance + boxesSize) * boxesCount) + "px");
+					$(this).attr("slot", boxesCount + 1);
+				}
+				
+				//Subtract one from each of the boxes' slot attribute.
+				$(this).attr("slot", (parseInt($(this).attr("slot")) - 1));
+			});
+			
+			//Move all the boxes one step to the left.
+			$("." + id + "-class").animate({"left": "-=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
+				//We're no longer animating.
+				animating = false;
+			});
+		}
+	}
+	
+	this.stepRight = function() {
+		//Make sure we're not currently animating the carousel.
+		if(!animating) {
+			//Start animating the carousel.
+			animating = true;
+			
+			//This will affect anything with this class name iteratively.
+			$("." + id + "-class").each(function() {
+				//Check to see if it's the last box.
+				if($(this).attr("slot") == boxesCount) {
+					//Move the last box up to the beginning.
+					$(this).css("left", "-" + (boxesSize + boxesDistance) + "px");
+					$(this).attr("slot", "0");
+				}
+				
+				//Add one to each of the boxes' slot attribute.
+				$(this).attr("slot", (parseInt($(this).attr("slot")) + 1));
+			});
+			
+			//Move all the boxes one step to the right.
+			$("." + id + "-class").animate({"left": "+=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
+				//We're no longer animating.
+				animating = false;
+			});
+		}
 	}
 	
 	/*Private Methods*/
