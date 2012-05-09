@@ -25,7 +25,7 @@ function Carousel(name) {
 		/*Creates a carousel inside the specified element with the parameters defined in setVars().*/
 		
 		//Check to see if we need it colorful, and itf it's not defined, set it to false.
-		boxesColorful = colorful || false;
+		boxesColorful = colorful || "no";
 		
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
@@ -57,7 +57,7 @@ function Carousel(name) {
 			$("#" + id + "-box" + i).attr("slot",  (i + 1));
 			
 			//If specified, spice-up the look of the boxes simply for looks.
-			if(boxesColorful == true) {
+			if(boxesColorful == "colorful") {
 				$("#" + id + "-box" + i).css("background-color", randomHexColor());
 			}
 			
