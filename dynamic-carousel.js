@@ -12,13 +12,14 @@ function Carousel(name) {
 	var boxesSize = 0;
 	var boxesDistance = 0;
 	var boxesSpeed = 0;
+	var boxesVisible = 0;
 	var boxesColorful = "";
 	var repeat = 0;
 	var loopMove = 0;
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.2.3";
+	this.version = "1.3";
 	
 	/*Public Methods*/
 	this.create = function(type, colorful) {
@@ -42,7 +43,7 @@ function Carousel(name) {
 		
 		//The extendedContainer merely holds all the boxes.
 		$("#" + id + "-extendedContainer").css({
-			"width": (parseInt($("#" + id + "-visibleContainer").css("width")) + (boxesSize + boxesDistance)) + "px",
+			"width": (parseInt($("#" + id + "-visibleContainer").css("width")) + boxesSize + boxesDistance) + "px",
 			"left": "-" + (boxesSize + boxesDistance) + "px",
 			"position": "absolute",
 			"height": boxesSize + "px"
@@ -63,19 +64,32 @@ function Carousel(name) {
 			//Apply a custom slot attribute that allows referencing its position in the carousel.
 			$("#" + id + "-box" + i).attr("slot",  (i + 1));
 			
-			//If specified, spice-up the look of the boxes simply for looks.
+			//If specified, spice-up the boxes simply for looks.
 			if(boxesColorful == "colorful") {
 				$("#" + id + "-box" + i).css("background-color", randomHexColor());
 			}
 			
 			//Increase the size of the containing elements, so they display the correct number of boxes.
-			$("#" + id + "-visibleContainer").css("width", "+=" + (boxesSize + boxesDistance) + "px");
+			if(i < boxesVisible && i < (boxesCount - 2)) {
+				$("#" + id + "-visibleContainer").css("width", "+=" + (boxesSize + boxesDistance) + "px");
+			}
 			$("#" + id + "-extendedContainer").css("width", "+=" + (boxesSize + boxesDistance) + "px");
 		}
 		
 		//Increase the size of the containing elements one last time to give them the required width.
-		$("#" + id + "-visibleContainer").css("width", "-=" + ((boxesSize + boxesDistance) * 2) + "px");
+		//$("#" + id + "-visibleContainer").css("width", "-=" + ((boxesSize + boxesDistance) * 2) + "px");
 		$("#" + id + "-extendedContainer").css("width", "-=" + (boxesSize + boxesDistance) + "px");
+	}
+	
+	this.positionElements = function() {
+		$("." + id + "-class").each(function(index) {
+			$(this).css({
+				"width": boxesSize + "px",
+				"height": boxesSize + "px",
+				"position": "absolute",
+				"left": (index * (boxesDistance + boxesSize)) + "px"
+			});
+		});
 	}
 	
 	this.animate = function() {
@@ -87,13 +101,14 @@ function Carousel(name) {
 		});
 	}
 	
-	this.setVars = function(where, count, size, distance, speed) {
+	this.setVars = function(where, count, size, distance, speed, visible) {
 		/*Sets all the necessary variables used throughout the constructor.*/
 		boxesWhere = where || document.body;
 		boxesCount = count || 5;
 		boxesSize = size || 50;
 		boxesDistance = distance || 5;
 		boxesSpeed = speed || 5;
+		boxesVisible = visible || 5;
 	}
 	
 	this.getVars = function() {
@@ -183,7 +198,7 @@ function Carousel(name) {
 		if(!animating) {
 			//TODO Use calculations instead of iterations and setInterval.
 			//Find the box's distance from the center.
-			repeat = Math.ceil(boxesCount / 2) - parseInt($(target).attr("slot"));
+			repeat = Math.ceil((boxesVisible + 2) / 2) - parseInt($(target).attr("slot"));
 			
 			//Determine which direction to move.
 			if(repeat == 0) {
