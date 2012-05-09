@@ -31,7 +31,8 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				car = new Carousel("car");
-				car.create("#carousel", "div", 7, 100, 5, 5, true);
+				car.setVars("#carousel", "div", 7, 100, 5, 5);
+				car.create(true);
 				car.animate();
 				$("#ver").html("v" + car.version);
 			});

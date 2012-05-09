@@ -5,7 +5,7 @@ function Carousel(name) {
 	"use strict";
 	
 	/*Private Variables*/
-	var id = name;
+	var id = name || "carousel";
 	var boxesWhere = 0;
 	var boxesType = "";
 	var boxesCount = 0;
@@ -18,20 +18,14 @@ function Carousel(name) {
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.2";
+	this.version = "1.2.1";
 	
 	/*Public Methods*/
-	this.create = function(where, type, count, size, distance, speed, colorful) {
-		/*Creates a carousel inside the specified element with the defined parameters.*/
+	this.create = function(colorful) {
+		/*Creates a carousel inside the specified element with the parameters defined in setVars().*/
 		
-		//Set predefined variables if they're not specified in the parameters.
-		boxesWhere = where || document.body;
-		boxesType = type || "div";
-		boxesCount = count || 5;
-		boxesSize = size || 50;
-		boxesDistance = distance || 5;
-		boxesSpeed = speed || 5;
-		boxesColorful = colorful || true;
+		//Check to see if we need it colorful, and itf it's not defined, set it to false.
+		boxesColorful = colorful || false;
 		
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
@@ -52,7 +46,7 @@ function Carousel(name) {
 		//Adds the specified amount of boxes to the carousel.
 		for(var i = 0; i < boxesCount; i ++) {
 			//Create a box and append it to the containing element.
-			$("#" + id + "-extendedContainer").append("<" + type + " id='" + id + "-box" + i + "'></" + type + ">");
+			$("#" + id + "-extendedContainer").append("<" + boxesType + " id='" + id + "-box" + i + "'></" + boxesType + ">");
 			$("#" + id + "-box" + i).css("width", boxesSize + "px");
 			$("#" + id + "-box" + i).css("height", boxesSize + "px");
 			$("#" + id + "-box" + i).css("position", "absolute");
@@ -84,6 +78,20 @@ function Carousel(name) {
 				center(this);
 			});
 		});
+	}
+	
+	this.setVars = function(where, type, count, size, distance, speed) {
+		//Set predefined variables if they're not specified in the parameters.
+		boxesWhere = where || document.body;
+		boxesType = type || "div";
+		boxesCount = count || 5;
+		boxesSize = size || 50;
+		boxesDistance = distance || 5;
+		boxesSpeed = speed || 5;
+	}
+	
+	this.getVars = function() {
+		
 	}
 	
 	this.stepLeft = function() {
