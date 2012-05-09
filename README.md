@@ -1,4 +1,4 @@
 dynamic-carousel
 ================
 
-A very customizable, dynamic, and constructable carousel that centers the clicked object.
+A very customizable, completely dynamic, and entirely constructable carousel that centers the clicked object.
