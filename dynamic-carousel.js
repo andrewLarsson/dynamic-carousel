@@ -27,7 +27,7 @@ function Carousel(name) {
 		
 		//Check to see if we need it colorful, and itf it's not defined, set it to false.
 		boxesType = type || "div";
-		boxesColorful = colorful || "no";
+		boxesColorful = colorful || "";
 		
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
