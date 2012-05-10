@@ -134,21 +134,21 @@ function Carousel(name) {
 	this.moveRight = function() {
 		/*Moves the carousel one step to the right using an iterator.*/
 		
-		//TODO Move this decrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
-		//Decrease the repeat counter, and then check to see if it's at the center.
-		if(repeat != 0) {
-			repeat --;
-			if(repeat == 0) {
-				//We're no longer centering the carousel.
-				centering = false;
-				clearInterval(loopMove);
-			}
-		}
-		
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
 			//Start animating the carousel.
 			animating = true;
+			
+			//TODO Move this decrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
+			//Decrease the repeat counter, and then check to see if it's at the center.
+			if(repeat != 0) {
+				repeat --;
+				if(repeat == 0) {
+					//We're no longer centering the carousel.
+					centering = false;
+					clearInterval(loopMove);
+				}
+			}
 			
 			//This will affect anything with this class name iteratively.
 			$("." + id + "-class").each(function() {
@@ -174,21 +174,21 @@ function Carousel(name) {
 	this.moveLeft = function() {
 		/*Moves the carousel one step to the left using an iterator.*/
 		
-		//TODO Move this incrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
-		//Increment the repeat counter, and then check to see if it's at the center.
-		if(repeat != 0) {
-			repeat ++;
-			if(repeat == 0) {
-				//We're no longer centering the carousel.
-				centering = false;
-				clearInterval(loopMove);
-			}
-		}
-		
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
 			//Start animating the carousel.
 			animating = true;
+			
+			//TODO Move this incrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
+			//Increment the repeat counter, and then check to see if it's at the center.
+			if(repeat != 0) {
+				repeat ++;
+				if(repeat == 0) {
+					//We're no longer centering the carousel.
+					centering = false;
+					clearInterval(loopMove);
+				}
+			}
 			
 			//This will affect anything with this class name iteratively.
 			$("." + id + "-class").each(function() {
