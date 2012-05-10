@@ -1,5 +1,6 @@
 function Carousel(name) {
 	/*Contains all the variables and methods required to construct a carousel and animate it.*/
+	/*Requires jQuery 1.7.2*/
 	
 	//Strict mode is enabled to ensure 'this' is used properly throughout.
 	"use strict";
@@ -105,14 +106,14 @@ function Carousel(name) {
 		});
 	}
 	
-	this.setVars = function(where, count, size, distance, speed, visible) {
+	this.setVars = function(vars) {
 		/*Sets all the necessary variables used throughout the constructor.*/
-		boxesWhere = where || document.body;
-		boxesCount = count || 5;
-		boxesSize = size || 50;
-		boxesDistance = distance || 5;
-		boxesSpeed = speed || 5;
-		boxesVisible = visible || 5;
+		boxesWhere = vars.where || document.body;
+		boxesCount = vars.count || 5;
+		boxesSize = vars.size || 50;
+		boxesDistance = vars.distance || 5;
+		boxesSpeed = vars.speed || 5;
+		boxesVisible = vars.visible || 5;
 	}
 	
 	this.getVars = function() {
@@ -122,7 +123,8 @@ function Carousel(name) {
 			count: boxesCount,
 			size: boxesSize,
 			distance: boxesDistance,
-			speed: boxesSpeed
+			speed: boxesSpeed,
+			visible: boxesVisible
 		};
 		return vars;
 	}

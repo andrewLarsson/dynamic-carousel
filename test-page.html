@@ -31,7 +31,14 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				car = new Carousel("car");
-				car.setVars("#carousel", 11, 100, 5, 15, 5);
+				car.setVars({
+					where: "#carousel",
+					count: 11,
+					size: 100,
+					distance: 5,
+					speed: 15,
+					visible: 5
+				});
 				car.create("div", "colorful");
 				car.animate();
 				$("#ver").html("v" + car.version);
