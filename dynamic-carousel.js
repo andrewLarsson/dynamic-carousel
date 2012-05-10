@@ -4,6 +4,9 @@ function Carousel(name) {
 	//Strict mode is enabled to ensure 'this' is used properly throughout.
 	"use strict";
 	
+	//Store this constructor class in a variable, so public methods can be called from private functions.
+	var self = this;
+	
 	/*Private Variables*/
 	var id = name || "carousel";
 	var boxesWhere = 0;
@@ -16,10 +19,11 @@ function Carousel(name) {
 	var boxesColorful = "";
 	var repeat = 0;
 	var loopMove = 0;
+	var centering = false;
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.3";
+	this.version = "1.3.1";
 	
 	/*Public Methods*/
 	this.create = function(type, colorful) {
@@ -123,37 +127,19 @@ function Carousel(name) {
 		return vars;
 	}
 	
-	this.stepLeft = function() {
-		/*Moves the carousel one step to the left.*/
+	this.moveRight = function() {
+		/*Moves the carousel one step to the right using an iterator.*/
 		
-		//Make sure we're not currently animating the carousel.
-		if(!animating) {
-			//Start animating the carousel.
-			animating = true;
-			
-			//This will affect anything with this class name iteratively.
-			$("." + id + "-class").each(function() {
-				//Check to see if it's the first box.
-				if($(this).attr("slot") == "1") {
-					//Move the first box to the end.
-					$(this).css("left", ((boxesDistance + boxesSize) * boxesCount) + "px");
-					$(this).attr("slot", boxesCount + 1);
-				}
-				
-				//Subtract one from each of the boxes' slot attribute.
-				$(this).attr("slot", (parseInt($(this).attr("slot")) - 1));
-			});
-			
-			//Move all the boxes one step to the left.
-			$("." + id + "-class").animate({"left": "-=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
-				//We're no longer animating.
-				animating = false;
-			});
+		//TODO Move this decrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
+		//Decrease the repeat counter, and then check to see if it's at the center.
+		if(repeat != 0) {
+			repeat --;
+			if(repeat == 0) {
+				//We're no longer centering the carousel.
+				centering = false;
+				clearInterval(loopMove);
+			}
 		}
-	}
-	
-	this.stepRight = function() {
-		/*Moves the carousel one step to the right.*/
 		
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
@@ -175,6 +161,46 @@ function Carousel(name) {
 			
 			//Move all the boxes one step to the right.
 			$("." + id + "-class").animate({"left": "+=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
+				//We're no longer animating.
+				animating = false;
+			});
+		}
+	}
+	
+	this.moveLeft = function() {
+		/*Moves the carousel one step to the left using an iterator.*/
+		
+		//TODO Move this incrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
+		//Increment the repeat counter, and then check to see if it's at the center.
+		if(repeat != 0) {
+			repeat ++;
+			if(repeat == 0) {
+				//We're no longer centering the carousel.
+				centering = false;
+				clearInterval(loopMove);
+			}
+		}
+		
+		//Make sure we're not currently animating the carousel.
+		if(!animating) {
+			//Start animating the carousel.
+			animating = true;
+			
+			//This will affect anything with this class name iteratively.
+			$("." + id + "-class").each(function() {
+				//Check to see if it's the first box.
+				if($(this).attr("slot") == "1") {
+					//Move the first box to the end.
+					$(this).css("left", ((boxesDistance + boxesSize) * boxesCount) + "px");
+					$(this).attr("slot", boxesCount + 1);
+				}
+				
+				//Subtract one from each of the boxes' slot attribute.
+				$(this).attr("slot", (parseInt($(this).attr("slot")) - 1));
+			});
+			
+			//Move all the boxes one step to the left.
+			$("." + id + "-class").animate({"left": "-=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
 				//We're no longer animating.
 				animating = false;
 			});
@@ -194,97 +220,29 @@ function Carousel(name) {
 		/*Centers the target box in the carousel.*/
 		
 		//TODO Make a queue if we're animating.
-		//Make sure we're not currently not animating the carousel.
-		if(!animating) {
+		//Make sure we're not currently not centering the carousel.
+		if(!centering) {
+			//We're now centering.
+			centering = true;
+			
 			//TODO Use calculations instead of iterations and setInterval.
 			//Find the box's distance from the center.
 			repeat = Math.ceil((boxesVisible + 2) / 2) - parseInt($(target).attr("slot"));
 			
 			//Determine which direction to move.
 			if(repeat == 0) {
-				//If we're already at the center, do nothing.
+				//If we're already at the center, do nothing, and we're no longer centering.
+				centering = false;
 				return;
 			} else if(repeat > 0) {
 				//If we're at a positive distance, start moving the box to the right.
-				loopMove = setInterval(moveRight, (5500 / boxesSpeed));
-				moveRight();
+				loopMove = setInterval(self.moveRight, (5500 / boxesSpeed));
+				self.moveRight();
 			} else if(repeat < 0) {
 				//If we're at a negative distance, start moving the box to the left.
-				loopMove = setInterval(moveLeft, (5500 / boxesSpeed));
-				moveLeft();
+				loopMove = setInterval(self.moveLeft, (5500 / boxesSpeed));
+				self.moveLeft();
 			}
-		}
-	}
-	
-	var moveRight = function() {
-		/*Moves the carousel one step to the right using an iterator.*/
-		
-		//TODO Move this decrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
-		//Decrease the repeat counter, and then check to see if it's at the center.
-		repeat --;
-		if(repeat == 0) {
-			clearInterval(loopMove);
-		}
-		
-		//Make sure we're not currently animating the carousel.
-		if(!animating) {
-			//Start animating the carousel.
-			animating = true;
-			
-			//This will affect anything with this class name iteratively.
-			$("." + id + "-class").each(function() {
-				//Check to see if it's the last box.
-				if($(this).attr("slot") == boxesCount) {
-					//Move the last box up to the beginning.
-					$(this).css("left", "-" + (boxesSize + boxesDistance) + "px");
-					$(this).attr("slot", "0");
-				}
-				
-				//Add one to each of the boxes' slot attribute.
-				$(this).attr("slot", (parseInt($(this).attr("slot")) + 1));
-			});
-			
-			//Move all the boxes one step to the right.
-			$("." + id + "-class").animate({"left": "+=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
-				//We're no longer animating.
-				animating = false;
-			});
-		}
-	}
-	
-	var moveLeft = function() {
-		/*Moves the carousel one step to the left using an iterator.*/
-		
-		//TODO Move this incrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
-		//Increment the repeat counter, and then check to see if it's at the center.
-		repeat ++;
-		if(repeat == 0) {
-			clearInterval(loopMove);
-		}
-		
-		//Make sure we're not currently animating the carousel.
-		if(!animating) {
-			//Start animating the carousel.
-			animating = true;
-			
-			//This will affect anything with this class name iteratively.
-			$("." + id + "-class").each(function() {
-				//Check to see if it's the first box.
-				if($(this).attr("slot") == "1") {
-					//Move the first box to the end.
-					$(this).css("left", ((boxesDistance + boxesSize) * boxesCount) + "px");
-					$(this).attr("slot", boxesCount + 1);
-				}
-				
-				//Subtract one from each of the boxes' slot attribute.
-				$(this).attr("slot", (parseInt($(this).attr("slot")) - 1));
-			});
-			
-			//Move all the boxes one step to the left.
-			$("." + id + "-class").animate({"left": "-=" + (boxesSize + boxesDistance)}, (5000 / boxesSpeed), function() {
-				//We're no longer animating.
-				animating = false;
-			});
 		}
 	}
 }
