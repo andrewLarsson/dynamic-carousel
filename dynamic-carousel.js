@@ -110,6 +110,8 @@ function Carousel(name) {
 	
 	this.setVars = function(vars) {
 		/*Sets all the necessary variables used throughout the constructor.*/
+		
+		//TODO Check each variable individually, so all variables don't have to be set each time.
 		boxesWhere = vars.where || document.body;
 		boxesCount = vars.count || 5;
 		boxesSize = vars.size || 50;
