@@ -24,7 +24,7 @@ function Carousel(name) {
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.3.1";
+	this.version = "1.3.2";
 	
 	/*Public Methods*/
 	this.create = function(type, colorful) {
@@ -54,6 +54,7 @@ function Carousel(name) {
 			"height": boxesSize + "px"
 		});
 		
+		//TODO Use positionElements() here instead of a for() loop.
 		//Adds the specified amount of boxes to the carousel.
 		for(var i = 0; i < boxesCount; i ++) {
 			//Create a box and append it to the containing element.
@@ -67,7 +68,7 @@ function Carousel(name) {
 			$("#" + id + "-box" + i).attr("class",  (id + "-class"));
 			
 			//Apply a custom slot attribute that allows referencing its position in the carousel.
-			$("#" + id + "-box" + i).attr("slot",  (i + 1));
+			$("#" + id + "-box" + i).attr("slot",  i);
 			
 			//If specified, spice-up the boxes simply for looks.
 			if(boxesColorful == "colorful") {
@@ -94,6 +95,7 @@ function Carousel(name) {
 				"position": "absolute",
 				"left": (index * (boxesDistance + boxesSize)) + "px"
 			});
+			$(this).attr("slot", index);
 		});
 	}
 	
@@ -151,10 +153,10 @@ function Carousel(name) {
 			//This will affect anything with this class name iteratively.
 			$("." + id + "-class").each(function() {
 				//Check to see if it's the last box.
-				if($(this).attr("slot") == boxesCount) {
+				if($(this).attr("slot") == (boxesCount - 1)) {
 					//Move the last box up to the beginning.
 					$(this).css("left", "-" + (boxesSize + boxesDistance) + "px");
-					$(this).attr("slot", "0");
+					$(this).attr("slot", "-1");
 				}
 				
 				//Add one to each of the boxes' slot attribute.
@@ -191,10 +193,10 @@ function Carousel(name) {
 			//This will affect anything with this class name iteratively.
 			$("." + id + "-class").each(function() {
 				//Check to see if it's the first box.
-				if($(this).attr("slot") == "1") {
+				if($(this).attr("slot") == "0") {
 					//Move the first box to the end.
 					$(this).css("left", ((boxesDistance + boxesSize) * boxesCount) + "px");
-					$(this).attr("slot", boxesCount + 1);
+					$(this).attr("slot", boxesCount);
 				}
 				
 				//Subtract one from each of the boxes' slot attribute.
@@ -229,7 +231,7 @@ function Carousel(name) {
 			
 			//TODO Use calculations instead of iterations and setInterval.
 			//Find the box's distance from the center.
-			repeat = Math.ceil((boxesVisible + 2) / 2) - parseInt($(target).attr("slot"));
+			repeat = Math.floor((boxesVisible + 2) / 2) - parseInt($(target).attr("slot"));
 			
 			//Determine which direction to move.
 			if(repeat == 0) {
