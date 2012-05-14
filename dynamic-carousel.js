@@ -18,6 +18,7 @@ function Carousel(name) {
 	var boxesSpeed = 0;
 	var boxesVisible = 0;
 	var boxesColorful = "";
+	var varsSet = false;
 	var repeat = 0;
 	var loopMove = 0;
 	var centering = false;
@@ -27,12 +28,19 @@ function Carousel(name) {
 	this.version = "1.3.2";
 	
 	/*Public Methods*/
-	this.create = function(type, colorful) {
+	
+	//TODO Make sure these methods aren't doing anything twice. Each method needs to do one thing and that one thing only.
+	
+	this.create = function(where, type, colorful) {
 		/*Creates a carousel inside the specified element with the parameters defined in setVars().*/
 		
-		//Check to see if we need it colorful, and itf it's not defined, set it to false.
+		//Check to see if all the parameters were defined.
+		boxesWhere = where || document.body;
 		boxesType = type || "div";
 		boxesColorful = colorful || "";
+		if(varsSet == false) {
+			self.setVars();
+		}
 		
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
@@ -112,18 +120,17 @@ function Carousel(name) {
 		/*Sets all the necessary variables used throughout the constructor.*/
 		
 		//TODO Check each variable individually, so all variables don't have to be set each time.
-		boxesWhere = vars.where || document.body;
 		boxesCount = vars.count || 5;
 		boxesSize = vars.size || 50;
 		boxesDistance = vars.distance || 5;
 		boxesSpeed = vars.speed || 5;
 		boxesVisible = vars.visible || 5;
+		varsSet = true;
 	}
 	
 	this.getVars = function() {
 		/*Returns all the variables that were defined in setVars().*/
 		var vars = {
-			where: boxesWhere,
 			count: boxesCount,
 			size: boxesSize,
 			distance: boxesDistance,

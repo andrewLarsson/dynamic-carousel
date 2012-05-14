@@ -32,14 +32,13 @@
 			$(document).ready(function() {
 				car = new Carousel("car");
 				car.setVars({
-					where: "#carousel",
 					count: 11,
 					size: 100,
 					distance: 5,
 					speed: 15,
 					visible: 5
 				});
-				car.create("div", "colorful");
+				car.create("#carousel", "div", "colorful");
 				car.animate();
 				$("#ver").html("v" + car.version);
 			});
