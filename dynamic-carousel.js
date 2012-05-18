@@ -1,6 +1,7 @@
 function Carousel(name) {
 	/*Contains all the variables and methods required to construct a carousel and animate it.*/
 	/*Requires jQuery 1.7.2*/
+	/*Copyright 2012 Andrew Larsson*/
 	
 	//Strict mode is enabled to ensure 'this' is used properly throughout.
 	"use strict";
@@ -41,6 +42,8 @@ function Carousel(name) {
 		if(varsSet == false) {
 			self.setVars();
 		}
+		
+		//TODO Use .append() and .prepend() here (or .appendTo()/.prependTo()?), but move these all to new methods. The create() method should only call other methods.
 		
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
@@ -106,6 +109,8 @@ function Carousel(name) {
 			$(this).attr("slot", index);
 		});
 	}
+
+	//TODO Pick a better name for this public method.
 	
 	this.animate = function() {
 		$("." + id + "-class").each(function() {
@@ -120,6 +125,7 @@ function Carousel(name) {
 		/*Sets all the necessary variables used throughout the constructor.*/
 		
 		//TODO Check each variable individually, so all variables don't have to be set each time.
+		//TODO Add the ability to specify width and height rather than just size.
 		boxesCount = vars.count || 5;
 		boxesSize = vars.size || 50;
 		boxesDistance = vars.distance || 5;
