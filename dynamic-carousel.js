@@ -66,6 +66,8 @@ function Carousel(name) {
 		});
 		
 		//TODO Use positionElements() here instead of a for() loop.
+		//TODO Use data-slot instead of slot to properly validate for HTML5.
+		//TODO Perhaps select data-slot by using $().data("slot", )?
 		//Adds the specified amount of boxes to the carousel.
 		for(var i = 0; i < boxesCount; i ++) {
 			//Create a box and append it to the containing element.
