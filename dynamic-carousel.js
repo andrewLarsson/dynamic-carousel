@@ -99,7 +99,8 @@ function Carousel(name) {
 		//$("#" + id + "-visibleContainer").css("width", "-=" + ((boxesSize + boxesDistance) * 2) + "px");
 		$("#" + id + "-extendedContainer").css("width", "-=" + (boxesSize + boxesDistance) + "px");
 	}
-	
+
+	//TODO Make sure that visibleContainer and extendedContainer are created as mentioned above or at least make sure that they are positioned correctly.
 	this.positionElements = function() {
 		$("." + id + "-class").each(function(index) {
 			$(this).css({
@@ -113,7 +114,6 @@ function Carousel(name) {
 	}
 
 	//TODO Pick a better name for this public method.
-	
 	this.animate = function() {
 		$("." + id + "-class").each(function() {
 			//Attaches an event handler to each box that calls the center() function when clicked.
