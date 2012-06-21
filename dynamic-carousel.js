@@ -27,7 +27,7 @@ function Carousel(name) {
 	var animating = false;
 	
 	/*Public Properties*/
-	this.version = "1.3.3";
+	this.version = "1.4";
 	
 	/*Public Methods*/
 	
