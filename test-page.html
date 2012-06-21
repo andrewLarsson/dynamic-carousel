@@ -26,8 +26,8 @@
 	<body>
 		<div id="carousel"></div>
 		<p id="ver"></p>
-		<a href="#" class="buttons" onclick="car.moveLeft()">&lt;&lt;&lt;&lt;&lt;._._._._._._._._._._._._._._._._...</a>
-		<a href="#" class="buttons" onclick="car.moveRight()">..._._._._._._._._._._._._._._._._.&gt;&gt;&gt;&gt;&gt;</a>
+		<a href="#" id="leftButton" class="buttons">&lt;&lt;&lt;&lt;&lt;._._._._._._._._._._._._._._._._...</a>
+		<a href="#" id="rightButton" class="buttons">..._._._._._._._._._._._._._._._._.&gt;&gt;&gt;&gt;&gt;</a>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				car = new Carousel("car");
@@ -41,6 +41,14 @@
 				car.create("#carousel", "div", "colorful");
 				car.animate();
 				$("#ver").html("v" + car.version);
+			});
+			$("#leftButton").click(function() {
+				car.moveLeft();
+				return false;
+			});
+			$("#rightButton").click(function() {
+				car.moveRight();
+				return false;
 			});
 		</script>
 	</body>
