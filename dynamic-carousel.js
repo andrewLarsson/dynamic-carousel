@@ -32,6 +32,7 @@ function Carousel(name) {
 	/*Public Methods*/
 	
 	//TODO Add events that anyone can bind to.
+	//TODO Add ability to disable features.
 	//TODO Make sure these methods aren't doing anything twice. Each method needs to do one thing and that one thing only.
 	
 	this.create = function(where, type, colorful) {
