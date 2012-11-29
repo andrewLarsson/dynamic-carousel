@@ -1,6 +1,6 @@
 function Carousel(name) {
 	/*Contains all the variables and methods required to construct a carousel and animate it.*/
-	/*Requires jQuery 1.7.2*/
+	/*Built with jQuery 1.7.2*/
 	/*Copyright 2012 Andrew Larsson*/
 	
 	//Strict mode is enabled to ensure 'this' is used properly throughout.
@@ -33,6 +33,7 @@ function Carousel(name) {
 	
 	//TODO Add events that anyone can bind to.
 	//TODO Add ability to disable features.
+	//TODO Add ability to add features (see below near the randomHexColor() function).
 	//TODO Make sure these methods aren't doing anything twice. Each method needs to do one thing and that one thing only.
 	
 	this.create = function(where, type, colorful) {
@@ -126,6 +127,7 @@ function Carousel(name) {
 		});
 	}
 	
+	//TODO Better handle the varsSet indicator to allow for individual variable setting.
 	this.setVars = function(vars) {
 		/*Sets all the necessary variables used throughout the constructor.*/
 		
@@ -139,6 +141,7 @@ function Carousel(name) {
 		varsSet = true;
 	}
 	
+	//TODO Accept a parameter here that will allow you to get one variable at a time.
 	this.getVars = function() {
 		/*Returns all the variables that were defined in setVars().*/
 		var vars = {
@@ -233,6 +236,8 @@ function Carousel(name) {
 	}
 	
 	/*Private Functions*/
+	
+	//TODO Remove useless functions like this one, and instead make it extensible (let the user easily do this on their end).
 	var randomHexColor = function() {
 		/*Returns a random hexadecimal color.*/
 		
