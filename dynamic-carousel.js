@@ -2,13 +2,13 @@ function Carousel(name) {
 	/*Contains all the variables and methods required to construct a carousel and animate it.*/
 	/*Built with jQuery 1.7.2*/
 	/*Copyright 2012 Andrew Larsson*/
-	
+
 	//Strict mode is enabled to ensure 'this' is used properly throughout.
 	"use strict";
-	
+
 	//Store this constructor class in a variable, so public methods can be called from private functions.
 	var self = this;
-	
+
 	/*Private Variables*/
 	var id = name || "carousel";
 	var boxesWhere = 0;
@@ -25,20 +25,20 @@ function Carousel(name) {
 	var loopMove = 0;
 	var centering = false;
 	var animating = false;
-	
+
 	/*Public Properties*/
 	this.version = "1.4";
-	
+
 	/*Public Methods*/
-	
+
 	//TODO Add events that anyone can bind to.
 	//TODO Add ability to disable features.
 	//TODO Add ability to add features (see below near the randomHexColor() function).
 	//TODO Make sure these methods aren't doing anything twice. Each method needs to do one thing and that one thing only.
-	
+
 	this.create = function(where, type, colorful) {
 		/*Creates a carousel inside the specified element with the parameters defined in setVars().*/
-		
+
 		//Check to see if all the parameters were defined.
 		boxesWhere = where || document.body;
 		boxesType = type || "div";
@@ -46,12 +46,12 @@ function Carousel(name) {
 		if(varsSet == false) {
 			self.setVars();
 		}
-		
+
 		//TODO Use .append() and .prepend() here (or .appendTo()/.prependTo()?), but move these all to new methods. The create() method should only call other methods.
-		
+
 		//Adds the visibleContainer and the extendedContainer with the needed CSS properties inside the specified element.
 		$(boxesWhere).append("<div id='" + id + "-visibleContainer'><div id='" + id + "-extendedContainer'></div></div>");
-		
+
 		//The visibleContainer has overflow: hidden, so that only some of the boxes are shown.
 		$("#" + id + "-visibleContainer").css({
 			"overflow-x": "hidden",
@@ -60,7 +60,7 @@ function Carousel(name) {
 			"height": boxesHeight + "px",
 			"position": "absolute"
 		});
-		
+
 		//The extendedContainer merely holds all the boxes.
 		$("#" + id + "-extendedContainer").css({
 			"width": (parseInt($("#" + id + "-visibleContainer").css("width")) + boxesWidth + boxesDistance) + "px",
@@ -68,7 +68,7 @@ function Carousel(name) {
 			"position": "absolute",
 			"height": boxesHeight + "px"
 		});
-		
+
 		//TODO Use positionElements() here instead of a for() loop.
 		//TODO Use data-slot instead of slot to properly validate for HTML5.
 		//TODO Perhaps select data-slot by using $().data("slot", )?
@@ -83,22 +83,22 @@ function Carousel(name) {
 				"left": (i * (boxesDistance + boxesWidth)) + "px"
 			});
 			$("#" + id + "-box" + i).attr("class",  (id + "-class"));
-			
+
 			//Apply a custom slot attribute that allows referencing its position in the carousel.
 			$("#" + id + "-box" + i).attr("slot",  i);
-			
+
 			//If specified, spice-up the boxes simply for looks.
 			if(boxesColorful == "colorful") {
 				$("#" + id + "-box" + i).css("background-color", randomHexColor());
 			}
-			
+
 			//Increase the size of the containing elements, so they display the correct number of boxes.
 			if(i < boxesVisible && i < (boxesCount - 2)) {
 				$("#" + id + "-visibleContainer").css("width", "+=" + (boxesWidth + boxesDistance) + "px");
 			}
 			$("#" + id + "-extendedContainer").css("width", "+=" + (boxesWidth + boxesDistance) + "px");
 		}
-		
+
 		//Increase the size of the containing elements one last time to give them the required width.
 		//$("#" + id + "-visibleContainer").css("width", "-=" + ((boxesWidth + boxesDistance) * 2) + "px");
 		$("#" + id + "-extendedContainer").css("width", "-=" + (boxesWidth + boxesDistance) + "px");
@@ -126,11 +126,11 @@ function Carousel(name) {
 			});
 		});
 	}
-	
+
 	//TODO Better handle the varsSet indicator to allow for individual variable setting.
 	this.setVars = function(vars) {
 		/*Sets all the necessary variables used throughout the constructor.*/
-		
+
 		//TODO Check each variable individually, so all variables don't have to be set each time.
 		boxesCount = vars.count || 5;
 		boxesWidth = vars.width || vars.size || 50;
@@ -140,7 +140,7 @@ function Carousel(name) {
 		boxesVisible = vars.visible || 5;
 		varsSet = true;
 	}
-	
+
 	//TODO Accept a parameter here that will allow you to get one variable at a time.
 	this.getVars = function() {
 		/*Returns all the variables that were defined in setVars().*/
@@ -154,15 +154,15 @@ function Carousel(name) {
 		};
 		return vars;
 	}
-	
+
 	this.moveRight = function() {
 		/*Moves the carousel one step to the right using an iterator.*/
-		
+
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
 			//Start animating the carousel.
 			animating = true;
-			
+
 			//TODO Move this decrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
 			//Decrease the repeat counter, and then check to see if it's at the center.
 			if(repeat != 0) {
@@ -173,7 +173,7 @@ function Carousel(name) {
 					clearInterval(loopMove);
 				}
 			}
-			
+
 			//This will affect anything with this class name iteratively.
 			$("." + id + "-class").each(function() {
 				//Check to see if it's the last box.
@@ -182,11 +182,11 @@ function Carousel(name) {
 					$(this).css("left", "-" + (boxesWidth + boxesDistance) + "px");
 					$(this).attr("slot", "-1");
 				}
-				
+
 				//Add one to each of the boxes' slot attribute.
 				$(this).attr("slot", (parseInt($(this).attr("slot")) + 1));
 			});
-			
+
 			//Move all the boxes one step to the right.
 			$("." + id + "-class").animate({"left": "+=" + (boxesWidth + boxesDistance)}, (5000 / boxesSpeed), function() {
 				//We're no longer animating.
@@ -194,15 +194,15 @@ function Carousel(name) {
 			});
 		}
 	}
-	
+
 	this.moveLeft = function() {
 		/*Moves the carousel one step to the left using an iterator.*/
-		
+
 		//Make sure we're not currently animating the carousel.
 		if(!animating) {
 			//Start animating the carousel.
 			animating = true;
-			
+
 			//TODO Move this incrementer/check outside of this function (maybe an anonymous function inside the setInterval callback?).
 			//Increment the repeat counter, and then check to see if it's at the center.
 			if(repeat != 0) {
@@ -213,7 +213,7 @@ function Carousel(name) {
 					clearInterval(loopMove);
 				}
 			}
-			
+
 			//This will affect anything with this class name iteratively.
 			$("." + id + "-class").each(function() {
 				//Check to see if it's the first box.
@@ -222,11 +222,11 @@ function Carousel(name) {
 					$(this).css("left", ((boxesDistance + boxesWidth) * boxesCount) + "px");
 					$(this).attr("slot", boxesCount);
 				}
-				
+
 				//Subtract one from each of the boxes' slot attribute.
 				$(this).attr("slot", (parseInt($(this).attr("slot")) - 1));
 			});
-			
+
 			//Move all the boxes one step to the left.
 			$("." + id + "-class").animate({"left": "-=" + (boxesWidth + boxesDistance)}, (5000 / boxesSpeed), function() {
 				//We're no longer animating.
@@ -234,31 +234,31 @@ function Carousel(name) {
 			});
 		}
 	}
-	
+
 	/*Private Functions*/
-	
+
 	//TODO Remove useless functions like this one, and instead make it extensible (let the user easily do this on their end).
 	var randomHexColor = function() {
 		/*Returns a random hexadecimal color.*/
-		
+
 		//Take a 0-padded string, append a random hexadeximal number between 0 and FFFFFF, and make it the correct length.
 		var randomHex = "#" + ("000000" + Math.floor(Math.random() * 0xFFFFFF).toString(16)).substr(-6);
 		return randomHex;
 	}
-	
+
 	var center = function(target) {
 		/*Centers the target box in the carousel.*/
-		
+
 		//TODO Make a queue if we're animating.
 		//Make sure we're not currently not centering the carousel.
 		if(!centering) {
 			//We're now centering.
 			centering = true;
-			
+
 			//TODO Use calculations instead of iterations and setInterval.
 			//Find the box's distance from the center.
 			repeat = Math.floor((boxesVisible + 2) / 2) - parseInt($(target).attr("slot"));
-			
+
 			//Determine which direction to move.
 			if(repeat == 0) {
 				//If we're already at the center, do nothing, and we're no longer centering.
